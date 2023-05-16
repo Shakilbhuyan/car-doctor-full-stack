@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import picture from '../../assets/images/login/login.svg'
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../Providers/AuthProvider';
+
 
 const Login = () => {
+    const {signInUser} = useContext(AuthContext)
     const handleLogin = event =>{
         event.preventDefault();
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(email, password)
+        signInUser(email, password)
+        .then(result=>{
+            const loggedUsr = result.user;
+            console.log(loggedUsr)
+        })
+        .catch(error=>console.log(error))
+        
     }
     return (
         <div className="hero min-h-screen bg-base-200">
@@ -29,7 +39,7 @@ const Login = () => {
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input type="text" name='password' placeholder="password" className="input input-bordered" />
+                            <input type="password" name='password' placeholder="password" className="input input-bordered" />
                             <label className="label">
                                 <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                             </label>
@@ -38,6 +48,7 @@ const Login = () => {
                             <input className="btn bg-red-600" type="submit" value="Login" />
                         </div>
                         </form>
+                        <p>New to car Doctors?<Link className='text-red-600 font-bold' to="/register">Sign Up</Link></p>
                     </div>
                 </div>
             </div>
